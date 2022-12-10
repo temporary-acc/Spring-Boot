@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport"
+		content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width">
+	<title>테스트</title>
+	<style type="text/css">
+		.background {
+			position: absolute;
+			display: block;
+			top: 0;
+			left: 0;
+			z-index: 0;
+		}
+	</style>
+	<!--아이콘-->
+	<link th:href="@{/layout/styles/layout.css}" rel="stylesheet" type="text/css" media="all" />
+</head>
+
+<body id="top">
+	<canvas class="background">
+	</canvas>
+	<div class="wrapper">
+	
+		<div th:replace="nav.html"></div>
+		
+		<div th:replace="header.html"></div>
+
+		<div th:replace="footer.html"></div>
+	</div>
+	<!-- JAVASCRIPTS -->
+	<script th:src="@{/layout/scripts/jquery.min.js}"></script>
+	<script th:src="@{/layout/scripts/jquery.backtotop.js}"></script>
+	<script th:src="@{/layout/scripts/jquery.mobilemenu.js}"></script>
+	<th:block layout:fragment="delScript"></th:block>
+	<script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/particlesjs/2.2.3/particles.min.js}"></script>
+	<script>window.onload = function () {
+			Particles.init({
+				selector: '.background',
+				connectParticles: true, color: "FF0000", minDistance: 120, sizeVariations: 3, maxParticles: 100
+			}
+
+			);
+
+		};</script>
+</body>
+
+</html>

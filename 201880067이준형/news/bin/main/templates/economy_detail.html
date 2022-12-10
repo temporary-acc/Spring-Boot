@@ -1,0 +1,178 @@
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<link th:href="@{/layout/styles/layout.css}" rel="stylesheet" type="text/css" media="all">
+	<link rel="stylesheet" th:href="@{https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css}">
+</head>
+
+
+<body id="top">
+	<div th:replace="header :: header"></div>
+	<div th:replace="nav :: menu"></div>
+
+	<div class="wrapper row3">
+		<main class="hoc container clear">
+			<!-- ################################################################################################ -->
+			<div class="content">
+
+				<!-- ################################################################################################ -->
+				<!-- ################################################################################################ -->
+				<!-- ################################################################################################ -->
+				<div>
+					<table class="table">
+						<!-- tr : 한줄 -->
+						<tr>
+							<th><abbr title="Position">제목</th>
+							<td colspan="3">[[ ${economy.subject} ]]</td>
+						</tr>
+						<tr>
+							<th>작성일시</th>
+							<td>[[ ${economy.Date} ]]</td>
+						</tr>
+						<tr>
+							<th>수정일시</th>
+							<td>[[ ${economy.modifyDate} ]]</td>
+						</tr>
+					</table>
+				</div>
+
+			</div>
+
+			<div class="content">
+				[[ ${economy.content} ]]
+			</div>
+			<div class="content">
+				<a class="btn btn-primary" th:href="@{|/economy/modify/${economy.id}|}" th:text="수정"
+					th:if="${ economy.author != null and #authentication.getPrincipal().getUsername() == economy.getAuthor().name }"></a>
+				<a class="delete btn btn-primary"
+					th:if="${ economy.author != null and #authentication.getPrincipal().getUsername() == economy.getAuthor().name }"
+					href="javascript:void(0);" th:data-url="@{|/question/delete/${economy.id}|}" th:text="삭제"></a>
+			</div>
+
+			<!-- ################################################################################################ -->
+			<!-- ################################################################################################ -->
+			<!-- ################################################################################################ -->
+			<div class="box">
+				<article class="media">
+					<div class="media-content">
+						<div class="content">
+							<h6
+								style="text-align: center; font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">
+								댓글목록</h6>
+							<hr>
+							<div class="content is-normal">
+								<ol>
+									<li th:each="ecomment : ${economy.ecommentList}">
+										작성자 : <a th:id="|ecomment_${ecomment.id}|"></a>
+										<span th:if="${ecomment.author != null}"
+											th:text="${ecomment.getAuthor().getName()}"></span>
+										<br>내용 : [[${ecomment.content}]]
+
+										<br>댓글 작성일 : [[${ecomment.Date}]]
+										<hr style="border-bottom: 2px solid rgb(204, 204, 204);">
+
+										<div>
+											<a th:href="@{|/ecomment/modify/${ecomment.id}|}"
+												class="btn btn-sm btn-outline-secondary"
+												sec:authorize="isAuthenticated()"
+												th:if="${ecomment.author != null and #authentication.getPrincipal().getUsername() == ecomment.getAuthor().getName()}"
+												th:text="수정"></a>
+
+											<a href="javascript:void(0);"
+												th:data-url="@{|/ecomment/delete/${ecomment.id}|}"
+												class="delete btn btn-sm btn-outline-secondary"
+												sec:authorize="isAuthenticated()"
+												th:if="${ecomment.author != null and #authentication.getPrincipal().getUsername() == ecomment.getAuthor().getName()}"
+												th:text="삭제"></a>
+										</div>
+									</li>
+								</ol>
+							</div>
+						</div>
+					</div>
+				</article>
+			</div>
+
+			<!-- ################################################################################################ -->
+			<!-- ################################################################################################ -->
+			<!-- ################################################# -->
+
+			<div class="box">
+				<div class="col-md-12">
+					<!-- /answer/create/1 or /answer/create/2, ... -->
+					<form th:object="${economyForm}" th:action="@{|/ecomment/create/${economy.id}|}" method="post">
+
+						<div class="alert alert-danger" role="alert" th:if="${#fields.hasAnyErrors()}">
+							<div th:each="err : ${#fields.allErrors()}" th:text="${err}" />
+						</div>
+
+						<div class="card-body">
+							<div class="form-group">
+								<label for="content">댓글 내용</label>
+
+								<textarea id="editors" class="textarea is-success" th:field="*{content}" rows="5"
+									placeholder="내용"></textarea>
+							</div>
+						</div>
+
+						<div class="card-footer">
+							<button type="submit" class="button is-info is-focused">등록</button>
+						</div>
+					</form>
+
+				</div>
+		</main>
+
+	</div>
+
+
+
+
+	<script layout:fragment="delScript" type='text/javascript'>
+		const delete_elements = document.getElementsByClassName("delete");
+		console.log(delete_elements)
+		Array.from(delete_elements).forEach(function (element) {
+			element.addEventListener('click', function () {
+				console.log(this.dataset.url)
+				if (confirm("정말로 삭제하시겠습니까?")) {
+					location.href = this.dataset.url;
+				};
+			});
+		});
+		const recommend_elements = document.getElementsByClassName("recommend");
+		Array.from(recommend_elements).forEach(function (element) {
+			element.addEventListener('click', function () {
+				if (confirm("정말로 추천하시겠습니까?")) {
+					location.href = this.dataset.url;
+				};
+			});
+		});
+	</script>
+
+
+
+	<!-- ################################################################################################ -->
+	<!-- ################################################################################################ -->
+	<!-- ################################################################################################ -->
+
+	<!-- ################################################################################################ -->
+	<!-- ################################################################################################ -->
+	<!-- ################################################################################################ -->
+	<div th:replace="footer :: footer"></div>
+	<!-- ################################################################################################ -->
+	<!-- ################################################################################################ -->
+	<!-- ################################################################################################ -->
+	<a id="backtotop" href="#top"><i class="fa fa-chevron-up"></i></a>
+	<!-- JAVASCRIPTS -->
+	<script th:src="@{/layout/scripts/jquery.min.js}"></script>
+	<script th:src="@{/layout/scripts/jquery.backtotop.js}"></script>
+	<script th:src="@{/layout/scripts/jquery.mobilemenu.js}"></script>
+	<script th:src="@{https://cdn.ckeditor.com/ckeditor5/34.0.0/classic/ckeditor.js}"></script>
+	<script>
+		ClassicEditor.create(document.querySelector('#editors'));
+	</script>
+</body>
+
+</html>

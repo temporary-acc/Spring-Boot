@@ -1,0 +1,12 @@
+body{
+  margin:0;
+  font: normal 16px Arial, Helvetica, sand-serif;
+  color:#333;
+}
+
+#particles-js{
+  background:firebrick;
+  height:400px;
+  background-image: url("/247323A0-4FCB-49FF-B901-B26D0BD527EB.jpg");
+}
+

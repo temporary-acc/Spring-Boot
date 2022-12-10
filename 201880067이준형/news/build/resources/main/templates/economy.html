@@ -1,0 +1,171 @@
+<html layout:frament="~{layout}">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<link th:href="@{/layout/styles/layout.css}" rel="stylesheet" type="text/css" media="all">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+	<script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+	<!-- bulma -->
+</head>
+
+<body id="top">
+<!-- ################################################################################################ -->
+<!-- ################################################################################################ -->
+<!-- ################################################################################################ -->
+<!-- Top Background Image Wrapper -->
+
+<div class="bgded overlay" style="background-image:url('../images/demo/backgrounds/01.jpg');">
+	<!-- ################################################################################################ -->
+	<div class="wrapper row0">
+		<div id="topbar" class="hoc clear">
+			<!-- ################################################################################################ -->
+			<div class="fl_left">
+				<ul>
+					<li><i class="fa fa-phone"></i> +82 (123) 456 7890</li>
+					<li><i class="fa fa-envelope-o"></i> root@mail.com</li>
+				</ul>
+			</div>
+			<div class="fl_right">
+				<ul>
+					<li sec:authorize="isAnonymous()"><a th:href="@{/user/login}">Login</a></li>
+					<li sec:authorize="isAuthenticated()" class="nav-item d-none d-sm-inline-block"><a
+							th:href="@{/user/logout}" class="nav-link">Logout</a></li>
+				</ul>
+			</div>
+			<!-- ################################################################################################ -->
+		</div>
+	</div>
+	<!-- ################################################################################################ -->
+</div>
+<!-- End Top Background Image Wrapper -->
+<!-- ################################################################################################ -->
+<div th:replace="nav :: menu"></div>
+<!-- ################################################################################################ -->
+<!-- ################################################################################################ -->
+
+
+<div class="wrapper row3">
+	<main class="hoc container clear">
+		<div class="field is-grouped">
+			<p class="control is-expanded">
+				<input class="search" type="text" id="searchKeyword" th:value="${kw}" placeholder="검색">
+			</p>
+			<p class="control">
+				<input class="button is-info" type="button" value="찾기" id="btn_search"></input>
+			</p>
+		</div>
+		<div class="columns is-mobile is-centered">
+			<div class="column is-half">
+			</div>
+		</div>
+
+		<!-- main body -->
+		<!-- ################################################################################################ -->
+		<div class="content">
+			<!-- ################################################################################################ -->
+
+			<table>
+				<thead>
+				<tr>
+					<th>
+								<span class="icon-text has-text-info">
+									<span class="icon">
+										<i class="fas fa-info-circle"></i>
+									</span>
+								</span>
+						<span>번호</span>
+					</th>
+					<th>제목</th>
+					<th><i class="fas fa-user fa-lg has-text-link "></i> 작성자</th>
+					</span>
+					<th>작성일시</th>
+
+				</thead>
+				<tbody>
+				<tr class="text-center" th:each="economy, loop : ${paging}">
+					<td th:text="${paging.getTotalElements - (paging.number * paging.size) - loop.index}">
+					</td>
+					<td>
+						<a th:href="@{|/economy/detail/${economy.id}|}" th:text="${economy.subject}"></a>
+					</td>
+					<td class="text-start">
+								<span th:if="${economy.author != null}"
+									  th:text="${economy.getAuthor().getName()}"></span>
+					</td>
+					<td>[[${economy.date}]]</td>
+				</tr>
+				</tbody>
+				</thead>
+			</table>
+
+			<a th:href="@{/economy/create}" type="button" class="btn btn-block btn-warning">질문 등록</a>
+
+			<!-- ################################################################################################ -->
+			<!-- ################################################################################################ -->
+			<nav class="pagination" role="navigation" aria-label="pagination">
+				<div th:if="${!paging.isEmpty()}">
+					<ul class="pagination-list">
+						<li class="page-item" th:classappend="${!paging.hasPrevious} ? 'disabled'">
+							<a class="pagination-previous" href="javascript:void(0)"
+							   th:data-page="${paging.number-1}">
+								<span>이전</span>
+							</a>
+						</li>
+						<li th:each="page: ${#numbers.sequence(0, paging.totalPages-1)}"
+							th:if="${page >= paging.number-5 and page <= paging.number+5}"
+							th:classappend="${page == paging.number} ? 'active'" class="page-item">
+							<a th:text="${page}" class="page-link" href="javascript:void(0)"
+							   th:data-page="${page}"></a>
+						</li>
+						<li class="page-item" th:classappend="${!paging.hasNext} ? 'disabled'">
+							<a class="pagination-next" href="javascript:void(0)" th:data-page="${paging.number+1}">
+								<span>다음</span>
+							</a>
+						</li>
+					</ul>
+				</div>
+				<div>
+					<form th:action="@{/economy/list}" method="get" id="searchForm">
+						<input type="hidden" id="kw" name="kw" th:value="${kw}">
+						<input type="hidden" id="page" name="page" th:value="${paging.number}">
+					</form>
+				</div>
+			</nav>
+		</div>
+
+	</main>
+</div>
+
+
+
+<!-- JAVASCRIPTS -->
+<script type='text/javascript'>
+		const page_elements = document.getElementsByClassName("page-link");
+		Array.from(page_elements).forEach(function (element) {
+			element.addEventListener('click', function () {
+				console.log("호출 2")
+				document.getElementById('page').value = this.dataset.page;
+				document.getElementById('searchForm').submit();
+			});
+		});
+
+		const btn_search = document.getElementById("btn_search");
+		btn_search.addEventListener('click', function () {
+			console.log("호출 1")
+			document.getElementById('kw').value = document.getElementById('searchKeyword').value;
+			document.getElementById('page').value = 0;  // 검색버튼을 클릭할 경우 0페이지부터 조회한다.
+			document.getElementById('searchForm').submit();
+		});
+
+
+</script>
+<div th:replace="footer :: footer"></div>
+<!-- ################################################################################################ -->
+<!-- ################################################################################################ -->
+<!-- ################################################################################################ -->
+<a id="backtotop" href="#top"><i class="fa fa-chevron-up"></i></a>
+
+<body>
+
+</html>
+

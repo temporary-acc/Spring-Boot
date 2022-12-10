@@ -1,0 +1,43 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '2.7.6'
+	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+	id 'war'
+}
+
+group = 'com.company.lu1z5ec'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	// Spring Boot Devtools, developmentOnly:개발시에만 포함
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'	
+	// 롬북: compileOnly:컴파일 단계에서만 포함
+	compileOnly 'org.projectlombok:lombok'
+	// 롬북: annotationProcessor: 컴파일시 어노테이션 분석시에만 포함
+	annotationProcessor 'org.projectlombok:lombok'
+	// JPA 라이브러리 주입
+	// implementation : 해당 라이브러리가 변경되도, 관련있는 부부만 컴파일하여 반영된다
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	// 타임리프 설치
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
+	// 폼 유효성 검사
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	// 스프링 시큐리티
+	implementation 'org.springframework.boot:spring-boot-starter-security' 
+	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
+	// https://mvnrepository.com/artifact/org.mariadb.jdbc/mariadb-java-client
+	implementation group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '3.1.0'
+	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}

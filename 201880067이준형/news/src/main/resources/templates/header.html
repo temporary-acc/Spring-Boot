@@ -1,0 +1,54 @@
+<div class="bgded overlay" style="background-image: url('/images/demo/backgrounds/01.jpg')" th:fragment="header">
+	
+	<!-- ################################################################################################ -->
+	<div id="pageintro" class="hoc clear">
+	
+		<!-- ################################################################################################ -->
+		<article>
+		<canvas class="background"></canvas>
+			<h3 class="heading"></h3>
+			<b>정확하고 신속한 정보 전달과 이롭고 바른 정보만 제공하며 <br> 정치적 중립과 국민과 소통하는 뉴스가 되겠습니다.
+			</b>
+			<p class="font-x1 bold"><em><span style="color:rgb(0, 183, 255)">News</span></em></p>
+			<footer>
+				<ul class="nospace inline pushright">
+					<li><a class="btn" href="#">준비중</a></li>
+					<li><a class="btn inverse" href="#">준비중</a></li>
+				</ul>
+			</footer>
+		</article>
+		<!-- ################################################################################################ -->
+	</div>
+	<!-- ################################################################################################ -->
+	<!-- ################################################################################################ -->
+	<!-- ################################################################################################ -->
+	<div class="wrapper row0">
+		<div id="topbar" class="hoc clear">
+			<!-- ################################################################################################ -->
+			<div class="fl_left">
+				<ul>
+					<li><i class="fa fa-phone"></i> +82 (02) 123 4567</li>
+					<li><i class="fa fa-envelope-o"></i>root@mail.com</li>
+				</ul>
+			</div>
+			<div class="fl_right">
+				<ul>
+					<li>
+						<a th:href="@{/}"><i class="fa fa-lg fa-home"></i></a>
+					</li>
+					<li sec:authorize="isAnonymous()"><a th:href="@{/user/login}">로그인</a></li>
+					<li sec:authorize="isAuthenticated()" class="nav-item d-none d-sm-inline-block">
+						<a th:href="@{/user/logout}" class="nav-link">로그아웃</a>
+					</li>
+					<!-- 회원가입 -->
+					<li sec:authorize="isAnonymous()" class="nav-item d-none d-sm-inline-block">
+						<a th:href="@{/user/signup}" class="nav-link">회원가입</a>
+					</li>
+
+				</ul>
+			</div>
+			<!-- ################################################################################################ -->
+		</div>
+	</div>
+	<!-- ################################################################################################ -->
+</div>
